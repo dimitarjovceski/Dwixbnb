@@ -3,6 +3,7 @@ import { useCountries } from "../lib/getCountries";
 import { Heart } from "lucide-react";
 import { AddToFavorite, DeleteFromFavorite } from "./SubmitButtons";
 import { addToFavorite, deleteFromFavorite } from "../actions";
+import Link from "next/link";
 
 interface IAppProps {
   imagePath: string;
@@ -60,7 +61,7 @@ const ListingCard = ({
         )}
       </div>
 
-      <div>
+      <Link href={`/home/${homeId}`}>
         <h3 className="font-medium mt-1">
           {country?.label}/{country?.region}
         </h3>
@@ -71,7 +72,7 @@ const ListingCard = ({
           <span className="font-bold mr-1 text-black">${price}</span>
           per Night
         </p>
-      </div>
+      </Link>
     </div>
   );
 };

@@ -4,6 +4,7 @@ import ListingCard from "./components/ListingCard";
 import prisma from "./lib/db";
 import NoItems from "./components/NoItems";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import Link from "next/link";
 
 async function getData({
   userId,
@@ -25,6 +26,7 @@ async function getData({
       description: true,
       price: true,
       country: true,
+
       Favorite: {
         where: {
           userId: userId ?? undefined,
