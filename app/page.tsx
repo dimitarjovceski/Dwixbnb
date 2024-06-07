@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import FilterCategories from "./components/FilterCategories";
 import ListingCard from "./components/ListingCard";
+import SkeletonCard from "./components/SkeletonCard";
 import prisma from "./lib/db";
 import NoItems from "./components/NoItems";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
@@ -67,7 +68,7 @@ export default async function Home({
       <Suspense
         key={searchParams?.filter}
         fallback={
-          <p className="text-center text-2xl font-bold mt-10">Loading...</p>
+          <SkeletonLoading />
         }
       >
         <ShowItems searchParams={searchParams} />
@@ -117,5 +118,21 @@ async function ShowItems({
         </div>
       )}
     </>
+  );
+}
+
+function SkeletonLoading() {
+  return (
+    <div className="grid lg:grid-cols-4 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-8">
+      <SkeletonCard />
+      <SkeletonCard />
+      <SkeletonCard />
+      <SkeletonCard />
+      <SkeletonCard />
+      <SkeletonCard />
+      <SkeletonCard />
+      <SkeletonCard />
+      <SkeletonCard />
+    </div>
   );
 }
