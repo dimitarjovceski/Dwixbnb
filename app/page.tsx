@@ -4,21 +4,32 @@ import ListingCard from "./components/ListingCard";
 import prisma from "./lib/db";
 import NoItems from "./components/NoItems";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import Link from "next/link";
+import { unstable_noStore as noStore } from "next/cache";
 
 async function getData({
   userId,
   searchParams,
 }: {
   userId: string | undefined;
-  searchParams?: { filter?: string };
+  searchParams?: {
+    filter?: string;
+    country?: string;
+    guests?: string;
+    rooms?: string;
+    bathrooms?: string;
+  };
 }) {
+  noStore();
   const data = await prisma.hotel.findMany({
     where: {
       addedCategory: true,
       addedDescription: true,
       addedLocation: true,
       categoryName: searchParams?.filter ?? undefined,
+      country: searchParams?.country ?? undefined,
+      guests: searchParams?.guests ?? undefined,
+      bedrooms: searchParams?.rooms ?? undefined,
+      bathrooms: searchParams?.bathrooms ?? undefined,
     },
     select: {
       photo: true,
@@ -41,7 +52,13 @@ async function getData({
 export default async function Home({
   searchParams,
 }: {
-  searchParams?: { filter?: string };
+  searchParams?: {
+    filter?: string;
+    country?: string;
+    guests?: string;
+    rooms?: string;
+    bathrooms?: string;
+  };
 }) {
   return (
     <div className="mx-auto px-4 lg:px-[200px]">
@@ -62,7 +79,13 @@ export default async function Home({
 async function ShowItems({
   searchParams,
 }: {
-  searchParams?: { filter?: string };
+  searchParams?: {
+    filter?: string;
+    country?: string;
+    guests?: string;
+    rooms?: string;
+    bathrooms?: string;
+  };
 }) {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
@@ -76,7 +99,7 @@ async function ShowItems({
           description="Please search for another category..."
         />
       ) : (
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-10">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-10 pb-10">
           {data.map((item) => (
             <ListingCard
               key={item.id}
